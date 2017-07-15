@@ -6,18 +6,21 @@ PODS:
   - Realm/Headers (2.8.3)
   - RealmSwift (2.8.3):
     - Realm (= 2.8.3)
+  - SwiftWebSocket (2.6.5)
 
 DEPENDENCIES:
   - Alamofire (~> 4.5.0)
   - GzipSwift
   - RealmSwift
+  - SwiftWebSocket
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
   Realm: 3601ef091c8c499a31101d8563b991e75546cdce
   RealmSwift: 8183818515471b01a99abdd2970f8e4fd52b6f4a
+  SwiftWebSocket: 1ef8a0efb023544643bdf480c1ec4a62b204f293
 
-PODFILE CHECKSUM: d2c17b20497a605b60d6850c0ae59670b2dad83c
+PODFILE CHECKSUM: e4f853668b77d9803b640a01bdb14088000aa35c
 
 COCOAPODS: 1.2.1

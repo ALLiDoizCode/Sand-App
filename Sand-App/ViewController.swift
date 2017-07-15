@@ -9,8 +9,10 @@
 import UIKit
 import Gzip
 import Alamofire
+import SwiftWebSocket
 class ViewController: UIViewController {
 
+    let url = URL(string: "ws://localhost:8080/bounce")
     var data:Data!
     var newData = Data()
     var decompressedData = Data()
@@ -29,6 +31,7 @@ class ViewController: UIViewController {
         guard let img = UIImage(named: "moutain") else {
             return
         }
+
         data = UIImageJPEGRepresentation(img, 1)
         
         // gzip
@@ -38,15 +41,70 @@ class ViewController: UIViewController {
         // gunzip
         
         //dataSize(theData: compressedData)
-        dataSize(theData: data)
-        createChunks(forData: data)
-    
+        echoTest()
+       
+        // M
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func echoTest(){
+        var count = 0
+        var messageNum = 0
+        let ws = WebSocket("ws://localhost:8080/bounce")
+        /*let send : ()->() = {
+            messageNum += 1
+            let msg = "\(messageNum): \(NSDate().description)"
+            print("send: \(msg)")
+            ws.send(msg)
+        }*/
+        ws.event.open = {
+            print("opened")
+            self.dataSize(theData: self.data)
+            self.createChunks(forData: self.data)
+            
+            for part in self.chunks {
+                ws.send(text: part.base64EncodedString())
+                /*let param = [
+                    "data":part.base64EncodedString()
+                ]
+                //print(part.base64EncodedString())
+                Alamofire.request("http://localhost:8080/bounce/data", method: .post, parameters: param, encoding: JSONEncoding.default, headers: headers).responseString(completionHandler: { (response) in
+                    
+                    //print(response)
+                    //print(response.data)
+                    //print(response.value)
+                    //print(response.result.value)
+                    
+                })*/
+            }
+            
+        
+        }
+        ws.event.close = { code, reason, clean in
+            print("close")
+        }
+        ws.event.error = { error in
+            print("error \(error)")
+        }
+        ws.event.message = { message in
+            if let text = message as? String {
+                print("recv: \(text)")
+                count = count + 1
+                let stringData = Data(base64Encoded: text)
+                self.newData.append(stringData!)
+                if count == self.chunks.count {
+                    print("count is \(count)")
+                    self.image = UIImage(data: self.newData)
+                    self.imageView.image = self.image
+                }
+            }
+        }
     }
     
     func dataSize(theData:Data){
@@ -93,39 +151,28 @@ class ViewController: UIViewController {
                 decompressedData = dataFromChunks
             }*/
             //decompressedData = try! dataFromChunks.gunzipped()
-            sendChunks(parts: chunks)
+            //sendChunks(parts: chunks)
         }
     }
     
     func sendChunks(parts:[Data]) {
-        var count = 0
         
         let headers:HTTPHeaders = [
             "Content-Type":"application/json"
         ]
         for part in parts {
          
-            
-            
             let param = [
                 "data":part.base64EncodedString()
             ]
-            print(part.base64EncodedString())
+            //print(part.base64EncodedString())
             Alamofire.request("http://localhost:8080/bounce/data", method: .post, parameters: param, encoding: JSONEncoding.default, headers: headers).responseString(completionHandler: { (response) in
                 
-                print(response)
-                print(response.data)
-                print(response.value)
-                print(response.result.value)
+                //print(response)
+                //print(response.data)
+                //print(response.value)
+                //print(response.result.value)
                 
-                count = count + 1
-                let stringData = Data(base64Encoded: response.result.value!)
-                self.newData.append(stringData!)
-                if count == self.chunks.count {
-                    print("count is \(count)")
-                    self.image = UIImage(data: self.newData)
-                    self.imageView.image = self.image
-                }
             })
         }
     }
