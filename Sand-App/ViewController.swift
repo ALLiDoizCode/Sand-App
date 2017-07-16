@@ -10,18 +10,18 @@ import UIKit
 import Gzip
 import Alamofire
 import SwiftWebSocket
-class ViewController: UIViewController {
+import CryptoSwift
+import SwiftyJSON
 
-    let url = URL(string: "ws://localhost:8080/bounce")
+class ViewController: UIViewController {
     var data:Data!
     var newData = Data()
-    var decompressedData = Data()
     var chunks:[Data] = []
-    //var compressedData:Data!
-    var optimizedData:Data!
     var image:UIImage!
     var imageView:UIImageView!
     var dataFromChunks = Data()
+    let uploadChunkSize = 5002
+    let ws = WebSocket("ws://localhost:8080/bounce")
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView = UIImageView(frame: self.view.frame)
@@ -34,18 +34,8 @@ class ViewController: UIViewController {
 
         data = UIImageJPEGRepresentation(img, 1)
         
-        // gzip
-         //compressedData = try! data.gzipped()
-         //optimizedData = try! data.gzipped(level: .bestCompression)
-        
-        // gunzip
-        
-        //dataSize(theData: compressedData)
         echoTest()
        
-        // M
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,36 +45,15 @@ class ViewController: UIViewController {
     
     func echoTest(){
         var count = 0
-        var messageNum = 0
-        let ws = WebSocket("ws://localhost:8080/bounce")
-        /*let send : ()->() = {
-            messageNum += 1
-            let msg = "\(messageNum): \(NSDate().description)"
-            print("send: \(msg)")
-            ws.send(msg)
-        }*/
         ws.event.open = {
             print("opened")
             self.dataSize(theData: self.data)
-            self.createChunks(forData: self.data)
-            
-            for part in self.chunks {
-                ws.send(text: part.base64EncodedString())
-                /*let param = [
-                    "data":part.base64EncodedString()
-                ]
-                //print(part.base64EncodedString())
-                Alamofire.request("http://localhost:8080/bounce/data", method: .post, parameters: param, encoding: JSONEncoding.default, headers: headers).responseString(completionHandler: { (response) in
-                    
-                    //print(response)
-                    //print(response.data)
-                    //print(response.value)
-                    //print(response.result.value)
-                    
-                })*/
-            }
-            
-        
+            self.createChunks(forData: self.data, completion: {
+                
+                for i in 0 ..< self.chunks.count {
+                    self.sendChunks(part: self.chunks[i],position:i)
+                }
+            })
         }
         ws.event.close = { code, reason, clean in
             print("close")
@@ -93,10 +62,14 @@ class ViewController: UIViewController {
             print("error \(error)")
         }
         ws.event.message = { message in
-            if let text = message as? String {
-                print("recv: \(text)")
+            if let text:String = message as! String {
+                //print("recv: \(text)")
                 count = count + 1
-                let stringData = Data(base64Encoded: text)
+                let json = JSON(parseJSON: text)
+                let chunk = json["chunk"].stringValue
+                print("recv: \(chunk)")
+                print("recv: \(json)")
+                let stringData = Data(base64Encoded: chunk)
                 self.newData.append(stringData!)
                 if count == self.chunks.count {
                     print("count is \(count)")
@@ -105,6 +78,38 @@ class ViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func saveChunk(chunk:Data){
+        
+        let newChunk = Chunk()
+        newChunk.chunk = chunk
+        newChunk.key = ""
+        newChunk.position = ""
+    }
+    
+    func createBlock(){
+        
+        let newBlock = Block()
+        newBlock.address = ""
+        newBlock.blockId = ""
+        newBlock.size = 0
+        newBlock.chunk = ""
+    }
+    
+    func brodcastBlock(){
+        
+    }
+    
+    func newBlockHeard(){
+        
+    }
+    
+    func updateBlockChain(){
+    }
+    
+    func updateNodeInfo(){
+        
     }
     
     func dataSize(theData:Data){
@@ -117,11 +122,10 @@ class ViewController: UIViewController {
         print("compressed size is \(size)")
     }
     
-    func createChunks(forData: Data) {
+    func createChunks(forData: Data,completion:() -> Void) {
 
         forData.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
             let mutRawPointer = UnsafeMutableRawPointer(mutating: u8Ptr)
-            let uploadChunkSize = 97152
             let totalSize = (forData as NSData).length
             var offset = 0
             
@@ -134,50 +138,39 @@ class ViewController: UIViewController {
                 dataFromChunks.append(chunk)
                 dataSize(theData: chunk)
             }
-            
+            completion()
             print(chunks.count)
-            
-            /*for part in dataFromChunks {
-                
-
-                newData.append(decompressedData)
-            }*/
-            
-            /*if decompressedData.isGzipped {
-                print("is zipped")
-                decompressedData = try! dataFromChunks.gunzipped()
-            } else {
-                print("is not zipped")
-                decompressedData = dataFromChunks
-            }*/
-            //decompressedData = try! dataFromChunks.gunzipped()
-            //sendChunks(parts: chunks)
         }
     }
     
-    func sendChunks(parts:[Data]) {
+    func sendChunks(part:Data,position:Int) {
         
-        let headers:HTTPHeaders = [
-            "Content-Type":"application/json"
+        let phrase = "test"
+        let hash = phrase.sha256()
+        print("public key is \(hash)")
+        let chunkDictionary =  [
+            "chunk":part.base64EncodedString(),
+            "size": "\(uploadChunkSize)",
+            "position":"\(position)",
+            "key":hash
         ]
-        for part in parts {
-         
-            let param = [
-                "data":part.base64EncodedString()
-            ]
-            //print(part.base64EncodedString())
-            Alamofire.request("http://localhost:8080/bounce/data", method: .post, parameters: param, encoding: JSONEncoding.default, headers: headers).responseString(completionHandler: { (response) in
-                
-                //print(response)
-                //print(response.data)
-                //print(response.value)
-                //print(response.result.value)
-                
-            })
-        }
+        
+        let json = JSON(chunkDictionary)
+        //print(json)
+        self.ws.send(json)
     }
-
-
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
+    
 }
 
 

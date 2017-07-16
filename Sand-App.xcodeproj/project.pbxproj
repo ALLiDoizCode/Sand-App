@@ -14,6 +14,7 @@
 		4DB385BE1F19B0F5003C455E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DB385BC1F19B0F5003C455E /* LaunchScreen.storyboard */; };
 		4DB385C91F19B0F5003C455E /* Sand_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB385C81F19B0F5003C455E /* Sand_AppTests.swift */; };
 		4DB385D41F19B0F5003C455E /* Sand_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB385D31F19B0F5003C455E /* Sand_AppUITests.swift */; };
+		4DEE932F1F1B245A000D2862 /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE932E1F1B245A000D2862 /* Chunk.swift */; };
 		4DFD26F81F1A680E00D3CEAD /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFD26F71F1A680E00D3CEAD /* Block.swift */; };
 		4DFD26FA1F1A715000D3CEAD /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFD26F91F1A715000D3CEAD /* Node.swift */; };
 		7FC38B7DD6D529259A156C5F /* Pods_Sand_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 449AA71E592E00B2EB81F4CF /* Pods_Sand_App.framework */; };
@@ -52,6 +53,7 @@
 		4DB385CF1F19B0F5003C455E /* Sand-AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sand-AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DB385D31F19B0F5003C455E /* Sand_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sand_AppUITests.swift; sourceTree = "<group>"; };
 		4DB385D51F19B0F5003C455E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DEE932E1F1B245A000D2862 /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunk.swift; sourceTree = "<group>"; };
 		4DFD26F71F1A680E00D3CEAD /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		4DFD26F91F1A715000D3CEAD /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		70008650935F8EDFED0EC25A /* Pods-Sand-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sand-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sand-App/Pods-Sand-App.debug.xcconfig"; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				4DFD26F71F1A680E00D3CEAD /* Block.swift */,
 				4DFD26F91F1A715000D3CEAD /* Node.swift */,
+				4DEE932E1F1B245A000D2862 /* Chunk.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			files = (
 				4DFD26F81F1A680E00D3CEAD /* Block.swift in Sources */,
 				4DB385B61F19B0F5003C455E /* ViewController.swift in Sources */,
+				4DEE932F1F1B245A000D2862 /* Chunk.swift in Sources */,
 				4DB385B41F19B0F5003C455E /* AppDelegate.swift in Sources */,
 				4DFD26FA1F1A715000D3CEAD /* Node.swift in Sources */,
 			);

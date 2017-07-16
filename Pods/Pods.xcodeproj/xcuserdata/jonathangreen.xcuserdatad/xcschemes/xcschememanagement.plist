@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>CryptoSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GzipSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -34,25 +39,35 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftyJSON.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>00394597A7ACEDAFF519E2A49B34041F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>103C159A8E41B13CC7B3B8B027604542</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6E2DA8945E4CB6BA9BB4BAA0A2130392</key>
+		<key>22E7B324D138C7AC2ECAC77D6A73DD85</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>84A45DD7BC45CA4742E08E5F71BA858A</key>
+		<key>4EBEEAB747D83F5E52DF2EC737967EFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6BB1C1403B2419F911818DA8413FDA07</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6F002BBCCF941DBC409687DF7C13ECCC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,7 +77,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B108FDFB1E9F6A707E5DDEE544EF160A</key>
+		<key>B121634CCA3BE2E1FFF932AC6E83796D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB5FBDFF06735985B7444B76D6E7B06A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

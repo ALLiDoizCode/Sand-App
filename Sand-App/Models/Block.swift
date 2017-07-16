@@ -10,9 +10,8 @@ import Foundation
 import RealmSwift
 
 class Block:Object {
-    dynamic var blockAddress:String!
+    dynamic var blockId:String!
     dynamic var address:String!
-    dynamic var chunk:Data!
+    dynamic var chunk:String!
     dynamic var size:Int64 = 0
-
 }
